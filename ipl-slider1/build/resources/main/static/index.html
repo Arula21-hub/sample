@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>IPL Image Slider</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #222;
+            margin-top: 30px;
+        }
+
+        .slider-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 40px auto;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            background-color: #fff;
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slider img {
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .controls {
+            margin-top: 20px;
+        }
+
+        .controls button {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .controls button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<h1>IPL Auto Image Slider</h1>
+
+<div class="slider-container">
+    <div class="slider" id="slider">
+        <img src="/images/rcb.jpg" />
+        <img src="/images/csk.jpg" />
+        <img src="/images/srh.jpg" />
+        <img src="/images/mi.jpg" />
+        <img src="/images/gt.jpg" />
+        <img src="/images/kkr.jpg" />
+        <img src="/images/pbks.jpg" />
+        <img src="/images/rr.jpg" />
+        <img src="/images/dc.jpg" />
+        <img src="/images/lsg.jpg" />
+    </div>
+</div>
+
+<div class="controls">
+    <button id="prevBtn">⟨ Prev</button>
+    <button id="pauseBtn">⏸ Pause</button>
+    <button id="nextBtn">Next ⟩</button>
+</div>
+
+<script>
+    const slider = document.getElementById('slider');
+    const totalImages = slider.children.length;
+    const imageWidth = 300;
+    let index = 0;
+    let isPlaying = true;
+    let intervalId;
+
+    function updateSlider() {
+        slider.style.transform = `translateX(-${index * imageWidth}px)`;
+    }
+
+    function startSlider() {
+        intervalId = setInterval(() => {
+            index = (index + 1) % totalImages;
+            updateSlider();
+        }, 3000);
+    }
+
+    function stopSlider() {
+        clearInterval(intervalId);
+    }
+
+    document.getElementById('nextBtn').onclick = () => {
+        index = (index + 1) % totalImages;
+        updateSlider();
+    };
+
+    document.getElementById('prevBtn').onclick = () => {
+        index = (index - 1 + totalImages) % totalImages;
+        updateSlider();
+    };
+
+    document.getElementById('pauseBtn').onclick = () => {
+        if (isPlaying) {
+            stopSlider();
+            document.getElementById('pauseBtn').textContent = '▶️ Play';
+        } else {
+            startSlider();
+            document.getElementById('pauseBtn').textContent = '⏸ Pause';
+        }
+        isPlaying = !isPlaying;
+    };
+
+    // Start auto-slide on load
+    startSlider();
+</script>
+
+</body>
+</html>
